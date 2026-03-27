@@ -3,86 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <title>For Swathi ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body {
- margin: 0;
- overflow: hidden;
- background: radial-gradient(circle at center, #000000, #1a0000);
- font-family: 'Arial', sans-serif;
- text-align: center;
- color: white;
+  margin: 0;
+  overflow: hidden;
+  background: black;
+  font-family: Arial;
+  text-align: center;
+  color: white;
 }
-/* Main text */
+
+/* 🎁 Intro screen */
+#intro {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #000, #200000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+#intro button {
+  padding: 15px 25px;
+  font-size: 20px;
+  background: red;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* 💖 Main content */
+.container {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 🌹 Real bouquet image */
+.bouquet img {
+  width: 200px;
+  animation: pop 2s infinite alternate;
+}
+
+@keyframes pop {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+/* ✨ Text */
 h1 {
- margin-top: 20%;
- font-size: 50px;
- color: #ff4d6d;
- animation: glow 1.5s infinite alternate;
+  font-size: 40px;
+  color: #ff4d6d;
+  animation: glow 1.5s infinite alternate;
 }
+
 p {
- font-size: 24px;
- color: #ffc0cb;
+  font-size: 22px;
+  color: pink;
 }
-/* Glow effect */
+
 @keyframes glow {
- from { text-shadow: 0 0 10px #ff4d6d; }
- to { text-shadow: 0 0 30px #ff99aa; }
+  from { text-shadow: 0 0 10px red; }
+  to { text-shadow: 0 0 30px pink; }
 }
-/* Floating hearts */
+
+/* 💓 Floating hearts */
 .heart {
- position: absolute;
- color: red;
- font-size: 20px;
- animation: floatUp linear infinite;
+  position: absolute;
+  color: red;
+  font-size: 20px;
+  animation: floatUp linear infinite;
 }
+
 @keyframes floatUp {
- 0% { transform: translateY(100vh) scale(1); opacity: 1; }
- 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+  0% { transform: translateY(100vh); opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
 }
-/* Roses (emoji rain) */
+
+/* 🌹 Falling roses */
 .rose {
- position: absolute;
- font-size: 24px;
- animation: fall linear infinite;
+  position: absolute;
+  font-size: 22px;
+  animation: fall linear infinite;
 }
+
 @keyframes fall {
- 0% { top: -10%; opacity: 1; }
- 100% { top: 110%; opacity: 0; }
-}
-.footer {
- margin-top: 20px;
- font-size: 18px;
- color: #ff99aa;
+  0% { top: -10%; }
+  100% { top: 110%; }
 }
 </style>
 </head>
+
 <body>
-<h1>I love you babe ❤️😍</h1>
-<p>You are my everything 💖</p>
-<p class="footer">– Vipul ❤️</p>
+
+<!-- 🎁 Intro -->
+<div id="intro">
+  <button onclick="openLove()">Tap for Surprise ❤️</button>
+</div>
+
+<!-- 💖 Main -->
+<div class="container" id="mainContent">
+
+  <div class="bouquet">
+    <img src="https://cdn.pixabay.com/photo/2016/03/05/19/02/roses-1239791_1280.jpg" alt="Rose Bouquet">
+  </div>
+
+  <h1>I love you babe ❤️😍</h1>
+  <p>You are my everything 💖</p>
+  <p>– Vipul ❤️</p>
+
+</div>
+
 <script>
-// Floating hearts
+function openLove() {
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("mainContent").style.display = "block";
+}
+
+// Hearts
 function createHeart() {
- const heart = document.createElement("div");
- heart.className = "heart";
- heart.innerHTML = "❤️";
- heart.style.left = Math.random() * 100 + "vw";
- heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
- document.body.appendChild(heart);
- setTimeout(() => heart.remove(), 6000);
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
 }
 setInterval(createHeart, 300);
-// Falling roses
+
+// Roses
 function createRose() {
- const rose = document.createElement("div");
- rose.className = "rose";
- rose.innerHTML = "🌹";
- rose.style.left = Math.random() * 100 + "vw";
- rose.style.animationDuration = (Math.random() * 4 + 3) + "s";
- document.body.appendChild(rose);
- setTimeout(() => rose.remove(), 7000);
+  const rose = document.createElement("div");
+  rose.className = "rose";
+  rose.innerHTML = "🌹";
+  rose.style.left = Math.random() * 100 + "vw";
+  rose.style.animationDuration = (Math.random() * 4 + 3) + "s";
+  document.body.appendChild(rose);
+  setTimeout(() => rose.remove(), 7000);
 }
 setInterval(createRose, 500);
 </script>
+
 </body>
 </html>
