@@ -9,62 +9,35 @@
 body {
   margin: 0;
   overflow: hidden;
-  background: black;
+  background: radial-gradient(circle at center, #000000, #1a0000);
   font-family: Arial;
   text-align: center;
   color: white;
 }
 
-/* 🎁 Intro screen */
-#intro {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, #000, #200000);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-
-#intro button {
-  padding: 15px 25px;
-  font-size: 20px;
-  background: red;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  cursor: pointer;
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-/* 💖 Main content */
+/* Center */
 .container {
-  display: none;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-/* 🌹 Real bouquet image */
-.bouquet img {
-  width: 200px;
+/* 💐 Bouquet (guaranteed visible) */
+.bouquet {
+  font-size: 38px;
+  line-height: 1.2;
+  margin-bottom: 20px;
   animation: pop 2s infinite alternate;
+  text-shadow: 0 0 20px red;
 }
 
 @keyframes pop {
   from { transform: scale(1); }
-  to { transform: scale(1.1); }
+  to { transform: scale(1.15); }
 }
 
-/* ✨ Text */
+/* Text */
 h1 {
   font-size: 40px;
   color: #ff4d6d;
@@ -81,7 +54,7 @@ p {
   to { text-shadow: 0 0 30px pink; }
 }
 
-/* 💓 Floating hearts */
+/* Hearts */
 .heart {
   position: absolute;
   color: red;
@@ -94,7 +67,7 @@ p {
   100% { transform: translateY(-10vh); opacity: 0; }
 }
 
-/* 🌹 Falling roses */
+/* Roses falling */
 .rose {
   position: absolute;
   font-size: 22px;
@@ -110,16 +83,14 @@ p {
 
 <body>
 
-<!-- 🎁 Intro -->
-<div id="intro">
-  <button onclick="openLove()">Tap for Surprise ❤️</button>
-</div>
+<div class="container">
 
-<!-- 💖 Main -->
-<div class="container" id="mainContent">
-
+  <!-- 💐 Bouquet -->
   <div class="bouquet">
-    <img src="https://cdn.pixabay.com/photo/2016/03/05/19/02/roses-1239791_1280.jpg" alt="Rose Bouquet">
+    🌹🌹🌹🌹🌹<br>
+    🌹🌹🌹🌹🌹<br>
+    🌹🌹🌹🌹🌹<br>
+    💐
   </div>
 
   <h1>I love you babe ❤️😍</h1>
@@ -129,11 +100,6 @@ p {
 </div>
 
 <script>
-function openLove() {
-  document.getElementById("intro").style.display = "none";
-  document.getElementById("mainContent").style.display = "block";
-}
-
 // Hearts
 function createHeart() {
   const heart = document.createElement("div");
