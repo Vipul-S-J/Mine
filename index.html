@@ -8,11 +8,10 @@
 <style>
 body {
   margin: 0;
-  overflow: hidden;
   background: black;
-  font-family: Arial;
-  text-align: center;
   color: white;
+  text-align: center;
+  font-family: Arial;
 }
 
 /* Intro */
@@ -24,7 +23,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
 }
 
 #intro button {
@@ -37,46 +35,46 @@ body {
   cursor: pointer;
 }
 
-/* Puzzle container */
-#puzzleContainer {
+/* Puzzle grid */
+#puzzle {
   display: none;
-  position: relative;
   width: 300px;
   height: 300px;
-  margin: 80px auto;
+  margin: 50px auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
 }
 
-/* Puzzle pieces */
 .piece {
-  position: absolute;
-  width: 100px;
+  width: 100%;
   height: 100px;
-  background-image: url('us.JPG'); /* 🔥 PUT YOUR IMAGE HERE */
+  background-image: url('us.jpg'); /* 🔥 PUT YOUR IMAGE */
   background-size: 300px 300px;
-  transition: all 1s ease;
+  cursor: pointer;
+  border: 1px solid #222;
 }
 
-/* Final message */
-#finalMessage {
+/* Message */
+#message {
   display: none;
 }
 
 h1 {
   color: #ff4d6d;
 }
-
 </style>
 </head>
 
 <body>
 
 <div id="intro">
-  <button onclick="startPuzzle()">Tap for Surprise ❤️</button>
+  <button onclick="startGame()">Tap for Surprise ❤️</button>
 </div>
 
-<div id="puzzleContainer"></div>
+<div id="puzzle"></div>
 
-<div id="finalMessage">
+<div id="message">
   <h1>I love you babe ❤️😍</h1>
   <p>You are my everything 💖</p>
   <p>– Vipul ❤️</p>
@@ -84,49 +82,84 @@ h1 {
 
 <script>
 
-const container = document.getElementById("puzzleContainer");
-const size = 3; // 3x3 puzzle
+const size = 3;
+let tiles = [];
+let first = null;
 
-function startPuzzle() {
+function startGame() {
   document.getElementById("intro").style.display = "none";
-  container.style.display = "block";
+  const puzzle = document.getElementById("puzzle");
+  puzzle.style.display = "grid";
 
-  let pieces = [];
-
+  // create tiles
   for (let i = 0; i < size * size; i++) {
-    let piece = document.createElement("div");
-    piece.className = "piece";
+    let tile = document.createElement("div");
+    tile.className = "piece";
+    tile.dataset.index = i;
 
     let x = i % size;
     let y = Math.floor(i / size);
 
-    // correct position
-    piece.dataset.correctX = x * 100;
-    piece.dataset.correctY = y * 100;
+    tile.style.backgroundPosition = `-${x * 100}px -${y * 100}px`;
+    tile.dataset.correct = i;
 
-    // background position
-    piece.style.backgroundPosition = `-${x * 100}px -${y * 100}px`;
+    tile.addEventListener("click", () => selectTile(tile));
 
-    // random start position
-    piece.style.left = Math.random() * window.innerWidth + "px";
-    piece.style.top = Math.random() * window.innerHeight + "px";
-
-    container.appendChild(piece);
-    pieces.push(piece);
+    tiles.push(tile);
   }
 
-  // Animate into place
-  setTimeout(() => {
-    pieces.forEach(p => {
-      p.style.left = p.dataset.correctX + "px";
-      p.style.top = p.dataset.correctY + "px";
-    });
-  }, 500);
+  shuffle(tiles);
 
-  // After complete → show message
+  tiles.forEach(t => puzzle.appendChild(t));
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function selectTile(tile) {
+  if (!first) {
+    first = tile;
+    tile.style.border = "2px solid red";
+  } else {
+    swapTiles(first, tile);
+    first.style.border = "1px solid #222";
+    first = null;
+
+    checkWin();
+  }
+}
+
+function swapTiles(a, b) {
+  let parent = a.parentNode;
+  let aIndex = Array.from(parent.children).indexOf(a);
+  let bIndex = Array.from(parent.children).indexOf(b);
+
+  if (aIndex < bIndex) {
+    parent.insertBefore(b, a);
+    parent.insertBefore(a, parent.children[bIndex]);
+  } else {
+    parent.insertBefore(a, b);
+    parent.insertBefore(b, parent.children[aIndex]);
+  }
+}
+
+function checkWin() {
+  let current = document.querySelectorAll(".piece");
+
+  for (let i = 0; i < current.length; i++) {
+    if (parseInt(current[i].dataset.correct) !== i) {
+      return;
+    }
+  }
+
+  // 💖 Puzzle solved
   setTimeout(() => {
-    document.getElementById("finalMessage").style.display = "block";
-  }, 2500);
+    document.getElementById("message").style.display = "block";
+  }, 300);
 }
 
 </script>
