@@ -15,7 +15,7 @@ body {
   color: white;
 }
 
-/* Intro screen */
+/* Intro */
 #intro {
   position: fixed;
   width: 100%;
@@ -35,135 +35,100 @@ body {
   border-radius: 10px;
   color: white;
   cursor: pointer;
-  animation: pulse 1s infinite;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-/* Main hidden initially */
-.container {
+/* Puzzle container */
+#puzzleContainer {
   display: none;
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 80px auto;
+}
+
+/* Puzzle pieces */
+.piece {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  background-image: url('your-photo.jpg'); /* 🔥 PUT YOUR IMAGE HERE */
+  background-size: 300px 300px;
+  transition: all 1s ease;
 }
 
-/* Bouquet */
-.bouquet {
-  font-size: 38px;
-  line-height: 1.2;
-  margin-bottom: 20px;
-  animation: pop 2s infinite alternate;
-  text-shadow: 0 0 20px red;
+/* Final message */
+#finalMessage {
+  display: none;
 }
 
-@keyframes pop {
-  from { transform: scale(1); }
-  to { transform: scale(1.15); }
-}
-
-/* Text */
 h1 {
-  font-size: 40px;
   color: #ff4d6d;
-  animation: glow 1.5s infinite alternate;
 }
 
-p {
-  font-size: 22px;
-  color: pink;
-}
-
-@keyframes glow {
-  from { text-shadow: 0 0 10px red; }
-  to { text-shadow: 0 0 30px pink; }
-}
-
-/* Hearts */
-.heart {
-  position: absolute;
-  color: red;
-  font-size: 20px;
-  animation: floatUp linear infinite;
-}
-
-@keyframes floatUp {
-  0% { transform: translateY(100vh); opacity: 1; }
-  100% { transform: translateY(-10vh); opacity: 0; }
-}
-
-/* Roses */
-.rose {
-  position: absolute;
-  font-size: 22px;
-  animation: fall linear infinite;
-}
-
-@keyframes fall {
-  0% { top: -10%; }
-  100% { top: 110%; }
-}
 </style>
 </head>
 
 <body>
 
-<!-- 💥 Tap screen -->
 <div id="intro">
-  <button onclick="openLove()">Tap for Surprise ❤️</button>
+  <button onclick="startPuzzle()">Tap for Surprise ❤️</button>
 </div>
 
-<!-- 💖 Main content -->
-<div class="container" id="mainContent">
+<div id="puzzleContainer"></div>
 
-  <div class="bouquet">
-    🌹🌹🌹🌹🌹<br>
-    🌹🌹🌹🌹🌹<br>
-    🌹🌹🌹🌹🌹<br>
-    💐
-  </div>
-
+<div id="finalMessage">
   <h1>I love you babe ❤️😍</h1>
   <p>You are my everything 💖</p>
   <p>– Vipul ❤️</p>
-
 </div>
 
 <script>
-// Tap action
-function openLove() {
+
+const container = document.getElementById("puzzleContainer");
+const size = 3; // 3x3 puzzle
+
+function startPuzzle() {
   document.getElementById("intro").style.display = "none";
-  document.getElementById("mainContent").style.display = "block";
+  container.style.display = "block";
+
+  let pieces = [];
+
+  for (let i = 0; i < size * size; i++) {
+    let piece = document.createElement("div");
+    piece.className = "piece";
+
+    let x = i % size;
+    let y = Math.floor(i / size);
+
+    // correct position
+    piece.dataset.correctX = x * 100;
+    piece.dataset.correctY = y * 100;
+
+    // background position
+    piece.style.backgroundPosition = `-${x * 100}px -${y * 100}px`;
+
+    // random start position
+    piece.style.left = Math.random() * window.innerWidth + "px";
+    piece.style.top = Math.random() * window.innerHeight + "px";
+
+    container.appendChild(piece);
+    pieces.push(piece);
+  }
+
+  // Animate into place
+  setTimeout(() => {
+    pieces.forEach(p => {
+      p.style.left = p.dataset.correctX + "px";
+      p.style.top = p.dataset.correctY + "px";
+    });
+  }, 500);
+
+  // After complete → show message
+  setTimeout(() => {
+    document.getElementById("finalMessage").style.display = "block";
+  }, 2500);
 }
 
-// Hearts
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 6000);
-}
-setInterval(createHeart, 300);
-
-// Roses
-function createRose() {
-  const rose = document.createElement("div");
-  rose.className = "rose";
-  rose.innerHTML = "🌹";
-  rose.style.left = Math.random() * 100 + "vw";
-  rose.style.animationDuration = (Math.random() * 4 + 3) + "s";
-  document.body.appendChild(rose);
-  setTimeout(() => rose.remove(), 7000);
-}
-setInterval(createRose, 500);
 </script>
 
 </body>
