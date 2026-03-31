@@ -35,12 +35,12 @@ body {
   cursor: pointer;
 }
 
-/* Puzzle grid */
+/* Puzzle */
 #puzzle {
   display: none;
   width: 300px;
   height: 300px;
-  margin: 50px auto;
+  margin: 60px auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2px;
@@ -49,20 +49,34 @@ body {
 .piece {
   width: 100%;
   height: 100px;
-  background-image: url('us.jpg'); /* 🔥 PUT YOUR IMAGE */
+  background-image: url('https://i.imgur.com/8Km9tLL.jpg'); /* 🔥 REPLACE WITH YOUR IMAGE */
   background-size: 300px 300px;
-  cursor: pointer;
+  background-repeat: no-repeat;
   border: 1px solid #222;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.piece:hover {
+  transform: scale(1.05);
 }
 
 /* Message */
 #message {
   display: none;
+  margin-top: 20px;
 }
 
 h1 {
   color: #ff4d6d;
+  animation: glow 1.5s infinite alternate;
 }
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px red; }
+  to { text-shadow: 0 0 25px pink; }
+}
+
 </style>
 </head>
 
@@ -88,14 +102,16 @@ let first = null;
 
 function startGame() {
   document.getElementById("intro").style.display = "none";
+
   const puzzle = document.getElementById("puzzle");
   puzzle.style.display = "grid";
+  puzzle.innerHTML = "";
+  tiles = [];
 
   // create tiles
   for (let i = 0; i < size * size; i++) {
     let tile = document.createElement("div");
     tile.className = "piece";
-    tile.dataset.index = i;
 
     let x = i % size;
     let y = Math.floor(i / size);
@@ -156,7 +172,7 @@ function checkWin() {
     }
   }
 
-  // 💖 Puzzle solved
+  // 💖 solved
   setTimeout(() => {
     document.getElementById("message").style.display = "block";
   }, 300);
